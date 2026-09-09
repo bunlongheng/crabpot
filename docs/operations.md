@@ -12,6 +12,22 @@ Repo-backed fixtures use `repo` and are pinned as shallow git submodules.
 Npm-only fixtures use `package.name` plus a pinned `package.version`; their code
 is unpacked into ignored `plugins/<id>` directories during materialization.
 
+Materialization collects requested npm pack failures, processes the remaining
+fixtures, and writes `reports/crabpot-package-availability.json` before exiting
+nonzero. The report labels the resolved fixture selection, including selection
+passed through the environment. It does not announce success or allow the
+static runner to continue past that failed prerequisite. A missing dist-tag that
+successfully falls back to the pinned shim version still succeeds, with its
+existing availability evidence; a failed fallback pack does not.
+
+`--no-package-availability-report` suppresses report writes, not failure:
+failed packs still exit nonzero and any existing report stays byte-identical.
+Failed acquisition creates no empty payload directory and leaves stale payload
+bytes untouched; their presence does not make the requested acquisition usable.
+`--check` remains manifest/shim validation, not an acquisition check. Best-effort
+reports can retain unavailable-package findings after materialization fails;
+successful report generation does not make the failed prerequisite pass.
+
 ## Updating fixtures
 
 ```bash
@@ -119,10 +135,17 @@ npm run profile -- --check
 node scripts/check-contract-coverage.mjs --openclaw ../openclaw
 ```
 
-`npm run plugin-inspector:smoke` uses the published
-`@openclaw/plugin-inspector@0.3.16` package by default. Use
+Source-backed reports and registration capture use the landed inspector repair
+for credential-free model-auth binding. `npm run plugin-inspector:smoke` still
+uses the older published `@openclaw/plugin-inspector@0.3.24` package by default;
+that package does not contain the repair. Use
 `CRABPOT_PLUGIN_INSPECTOR_CLI=source npm run plugin-inspector:smoke` only when
-validating local inspector source changes.
+validating local inspector source changes. Set `CRABPOT_PLUGIN_INSPECTOR_DIR`
+to the candidate checkout to avoid selecting a different sibling checkout.
+Keep the published package pin unchanged until the candidate is on npm, then
+update it and run the package-mode smoke separately.
+The npm smoke forwards `--check`, so reported compatibility breakages produce
+a failing exit status. Direct wrapper calls without `--check` only write reports.
 
 Issue severity means:
 

@@ -2,45 +2,53 @@
   "generatedAt": "deterministic",
   "title": "Crabpot CI Summary",
   "mode": "check",
-  "openclawLabel": "openclaw/openclaw@7ae6a950f6b7 (Default Track pin 2026-08-04)",
+  "openclawLabel": "openclaw/openclaw@5570c5ffac86 (Default Track pin 2026-08-28)",
   "status": "pass",
   "summary": {
     "breakages": 0,
-    "warnings": 138,
-    "suggestions": 249,
-    "issues": 387,
-    "p0Issues": 6,
-    "p1Issues": 127,
-    "liveIssues": 6,
-    "liveP0Issues": 6,
-    "compatGaps": 112,
-    "deprecationWarnings": 38,
-    "inspectorGaps": 157,
-    "upstreamIssues": 74,
+    "warnings": 121,
+    "suggestions": 237,
+    "issues": 358,
+    "p0Issues": 9,
+    "p1Issues": 123,
+    "liveIssues": 9,
+    "liveP0Issues": 9,
+    "compatGaps": 107,
+    "deprecationWarnings": 22,
+    "inspectorGaps": 156,
+    "upstreamIssues": 64,
     "refDiffFailures": 0,
     "refDiffWarnings": 0,
     "policyFailures": 0,
-    "policyWarnings": 308,
+    "policyWarnings": 1,
     "profileFailures": 0,
     "profileWarnings": 2,
-    "executionPass": 120,
+    "executionPass": 0,
     "executionFail": 0,
-    "executionBlocked": 306,
+    "executionBlocked": 0,
     "platformWindowsRisks": 17,
     "platformContainerRisks": 17,
     "loaderJitiCandidates": 20,
-    "importLoopP50Ms": 118,
-    "importLoopP95Ms": 118,
-    "importLoopOpenClawLifecycleCount": 0,
-    "importLoopOpenClawImportP50Ms": 0,
-    "importLoopOpenClawActivationP50Ms": 0,
+    "importLoopP50Ms": 3066,
+    "importLoopP95Ms": 3108,
+    "importLoopOpenClawLifecycleCount": 3,
+    "importLoopOpenClawImportP50Ms": 129.1,
+    "importLoopOpenClawActivationP50Ms": 0.5,
     "importLoopMetricBasis": "baseline-adjusted",
-    "importLoopMaxRssMb": 0.1,
-    "importLoopMaxCpuMs": 9,
-    "importLoopRssSampleCount": 12,
-    "importLoopCpuSampleCount": 12
+    "importLoopMaxRssMb": 0.7,
+    "importLoopMaxCpuMs": 16,
+    "importLoopRssSampleCount": 364,
+    "importLoopCpuSampleCount": 364
   },
   "topIssues": [
+    {
+      "severity": "P0",
+      "issueClass": "live-issue",
+      "fixture": "aiwerk-mcp-bridge",
+      "code": "unknown-hook-name",
+      "title": "aiwerk-mcp-bridge: fixture uses a hook missing from target OpenClaw",
+      "decision": "core-compat-adapter"
+    },
     {
       "severity": "P0",
       "issueClass": "live-issue",
@@ -69,6 +77,14 @@
       "severity": "P0",
       "issueClass": "live-issue",
       "fixture": "kitchen-sink",
+      "code": "unknown-hook-name",
+      "title": "kitchen-sink: fixture uses a hook missing from target OpenClaw",
+      "decision": "core-compat-adapter"
+    },
+    {
+      "severity": "P0",
+      "issueClass": "live-issue",
+      "fixture": "kitchen-sink",
       "code": "unknown-registration-name",
       "title": "kitchen-sink: fixture calls a registrar missing from target OpenClaw",
       "decision": "core-compat-adapter"
@@ -87,6 +103,14 @@
       "fixture": "openclaw-telemetry",
       "code": "unknown-hook-name",
       "title": "openclaw-telemetry: fixture uses a hook missing from target OpenClaw",
+      "decision": "core-compat-adapter"
+    },
+    {
+      "severity": "P0",
+      "issueClass": "live-issue",
+      "fixture": "opik-openclaw",
+      "code": "unknown-hook-name",
+      "title": "opik-openclaw: fixture uses a hook missing from target OpenClaw",
       "decision": "core-compat-adapter"
     },
     {
@@ -131,6 +155,14 @@
     },
     {
       "severity": "P1",
+      "issueClass": "compat-gap",
+      "fixture": "brave-plugin",
+      "code": "sdk-export-missing",
+      "title": "brave-plugin: plugin SDK import aliases are missing from target package exports",
+      "decision": "core-compat-adapter"
+    },
+    {
+      "severity": "P1",
       "issueClass": "inspector-gap",
       "fixture": "clawmetry",
       "code": "conversation-access-hook",
@@ -168,38 +200,6 @@
       "code": "missing-compat-record",
       "title": "codex: compat-dependent behavior lacks registry coverage",
       "decision": "core-compat-adapter"
-    },
-    {
-      "severity": "P1",
-      "issueClass": "compat-gap",
-      "fixture": "codex-app-server",
-      "code": "missing-compat-record",
-      "title": "codex-app-server: compat-dependent behavior lacks registry coverage",
-      "decision": "core-compat-adapter"
-    },
-    {
-      "severity": "P1",
-      "issueClass": "compat-gap",
-      "fixture": "connectclaw",
-      "code": "missing-compat-record",
-      "title": "connectclaw: compat-dependent behavior lacks registry coverage",
-      "decision": "core-compat-adapter"
-    },
-    {
-      "severity": "P1",
-      "issueClass": "compat-gap",
-      "fixture": "connectclaw",
-      "code": "missing-compat-record",
-      "title": "connectclaw: compat-dependent behavior lacks registry coverage",
-      "decision": "core-compat-adapter"
-    },
-    {
-      "severity": "P1",
-      "issueClass": "compat-gap",
-      "fixture": "connectclaw",
-      "code": "missing-compat-record",
-      "title": "connectclaw: compat-dependent behavior lacks registry coverage",
-      "decision": "core-compat-adapter"
     }
   ],
   "refRegressions": [],
@@ -207,232 +207,17 @@
     {
       "id": "compatibility-report.live-p0-issues",
       "action": "warn",
-      "message": "6 live P0 issues tracked",
+      "message": "9 live P0 issues tracked",
       "evidence": [
+        "aiwerk-mcp-bridge:unknown-hook-name:none",
         "connectclaw:unknown-hook-name:none",
         "honcho:unknown-hook-name:none",
         "honcho:unknown-registration-name:none",
+        "kitchen-sink:unknown-hook-name:none",
         "kitchen-sink:unknown-registration-name:none",
         "memos-cloud:unknown-hook-name:none",
-        "openclaw-telemetry:unknown-hook-name:none"
-      ]
-    },
-    {
-      "id": "execution-results.audit-findings",
-      "action": "warn",
-      "message": "577 package audit findings",
-      "evidence": [
-        "a2a-gateway:26",
-        "apify:28",
-        "codex-app-server:153",
-        "ddingtalk:254",
-        "diagnostics-otel:14",
-        "feishu:2",
-        "hasdata:5",
-        "mocrane-wecom:32",
-        "openclaw-weixin:2",
-        "opik-openclaw:5",
-        "qqbot:28",
-        "wecom:19",
-        "yuanbao:9"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerGatewayMethod.0",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerGatewayMethod",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerGatewayMethod.1",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerGatewayMethod",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerGatewayMethod.2",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerGatewayMethod",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerGatewayMethod.3",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerGatewayMethod",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerGatewayMethod.4",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerGatewayMethod",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerService.6",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration requires includeLifecycle=true",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerService",
-        "captured registration requires includeLifecycle=true",
-        "service-lifecycle-harness"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.a2a-gateway.registerTool.5",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/a2a-gateway/cold-import-extension-a2a-gateway-plugins-a2a-gateway-index-ts.synthetic.json",
-        "registerTool",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.apify.registerCli.0",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration has no supported callable probe",
-      "evidence": [
-        ".crabpot/results/apify/cold-import-extension-apify-plugins-apify-src-index-ts.synthetic.json",
-        "registerCli",
-        "captured registration has no supported callable probe",
-        "generated-surface-registration-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.bluebubbles.registerChannel.0",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration requires includeChannelRuntime=true",
-      "evidence": [
-        ".crabpot/results/bluebubbles/cold-import-runtimeExtension-bluebubbles-plugins-bluebubbles-crabpot-package-dist-index-js.synthetic.json",
-        "registerChannel",
-        "captured registration requires includeChannelRuntime=true",
-        "channel-runtime-harness"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.after_tool_call.0",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-extension-clawmetry-plugins-clawmetry-clawhub-plugin-index-ts.synthetic.json",
-        "after_tool_call",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.after_tool_call.0",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-runtimeExtension-clawmetry-plugins-clawmetry-clawhub-plugin-dist-index-js.synthetic.json",
-        "after_tool_call",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.llm_output.1",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-extension-clawmetry-plugins-clawmetry-clawhub-plugin-index-ts.synthetic.json",
-        "llm_output",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.llm_output.1",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-runtimeExtension-clawmetry-plugins-clawmetry-clawhub-plugin-dist-index-js.synthetic.json",
-        "llm_output",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.message_received.4",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-extension-clawmetry-plugins-clawmetry-clawhub-plugin-index-ts.synthetic.json",
-        "message_received",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.message_received.4",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-runtimeExtension-clawmetry-plugins-clawmetry-clawhub-plugin-dist-index-js.synthetic.json",
-        "message_received",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.message_sent.5",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-extension-clawmetry-plugins-clawmetry-clawhub-plugin-index-ts.synthetic.json",
-        "message_sent",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.message_sent.5",
-      "action": "warn",
-      "message": "allowed-blocked: captured hook has no callable handler",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-runtimeExtension-clawmetry-plugins-clawmetry-clawhub-plugin-dist-index-js.synthetic.json",
-        "message_sent",
-        "captured hook has no callable handler",
-        "generated-surface-hook-stubs"
-      ]
-    },
-    {
-      "id": "execution-results.blocked.clawmetry.registerService.6",
-      "action": "warn",
-      "message": "allowed-blocked: captured registration requires includeLifecycle=true",
-      "evidence": [
-        ".crabpot/results/clawmetry/cold-import-extension-clawmetry-plugins-clawmetry-clawhub-plugin-index-ts.synthetic.json",
-        "registerService",
-        "captured registration requires includeLifecycle=true",
-        "service-lifecycle-harness"
+        "openclaw-telemetry:unknown-hook-name:none",
+        "opik-openclaw:unknown-hook-name:none"
       ]
     }
   ],
@@ -441,20 +226,20 @@
       "id": "profile.wall-p95",
       "action": "warn",
       "metric": "p95WallMs",
-      "message": "p95WallMs regressed 450.3% over baseline",
+      "message": "p95WallMs regressed 367.1% over baseline",
       "baseline": 1273,
-      "current": 7005,
-      "delta": 5732,
-      "percent": 450.3
+      "current": 5946,
+      "delta": 4673,
+      "percent": 367.1
     },
     {
       "id": "profile.peak-rss",
       "action": "warn",
       "metric": "maxPeakRssMb",
-      "message": "maxPeakRssMb regressed 492.1 over baseline",
+      "message": "maxPeakRssMb regressed 148.5 over baseline",
       "baseline": 65.1,
-      "current": 557.2,
-      "delta": 492.1
+      "current": 213.6,
+      "delta": 148.5
     }
   ],
   "artifacts": {

@@ -59,16 +59,16 @@ jobs:
           fi
           echo "run=${run}" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: ${{ steps.select.outputs.run == 'true' }}
         with:
           ref: main
           submodules: recursive
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         if: ${{ steps.select.outputs.run == 'true' }}
         with:
-          node-version: 22
+          node-version: ${{ matrix.track == 'development' && '24' || '22' }}
           cache: npm
           cache-dependency-path: |
             plugins/**/package-lock.json
@@ -78,7 +78,7 @@ jobs:
         id: openclaw-track
         run: node scripts/resolve-openclaw-track.mjs --track "${{ matrix.track }}" --github-output
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         if: ${{ steps.select.outputs.run == 'true' }}
         with:
           repository: openclaw/openclaw
