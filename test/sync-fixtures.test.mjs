@@ -109,6 +109,7 @@ async function miniatureRepo(t, fixtures, steps = []) {
     await writeFile(path.join(archiveRoot, "package/index.mjs"), 'export const marker = "inert";\n');
     if (step.metadataLink) {
       await symlink(step.metadataLink, path.join(archiveRoot, "package/.crabpot-source.json"), "file");
+      assert.equal((await lstat(path.join(archiveRoot, "package/.crabpot-source.json"))).isSymbolicLink(), true);
     }
     step.tarball = path.join(archiveRoot, "fixture.tgz");
     const tar = spawnSync("tar", ["-czf", "fixture.tgz", "package"], { cwd: archiveRoot, encoding: "utf8" });
@@ -374,7 +375,23 @@ for (const acquisition of ["npm", "source-pack"]) {
     await mkdir(repo.outside);
     await writeFile(path.join(repo.outside, "sentinel.txt"), "outside metadata must survive\n");
     const before = await directoryBytes(repo.outside);
-    const result = repo.run("sync-fixtures.mjs", args);
+    // MSYS tar otherwise copies the link target instead of creating a native Windows symlink.
+    const env = process.platform === "win32" ? { MSYS: "winsymlinks:nativestrict" } : {};
+    if (process.platform === "win32") {
+      t.diagnostic(`tar resolution: ${spawnSync("where.exe", ["tar"], { encoding: "utf8" }).stdout}`);
+      t.diagnostic(`tar version: ${spawnSync("tar", ["--version"], { encoding: "utf8" }).stdout}`);
+      // Temporary red control: restore only the pre-fix metadata writer in this sandbox.
+      const script = path.join(repo.root, "scripts/sync-fixtures.mjs");
+      const source = await readFile(script, "utf8");
+      assert.equal(source.split("  await assertFixtureDestination(fixture, true);\n").length, 3);
+      assert.equal(source.split("  await rm(metadataPath, { force: true });\n").length, 2);
+      assert.equal(source.split('{ encoding: "utf8", flag: "wx" }').length, 2);
+      await writeFile(script, source
+        .replaceAll("  await assertFixtureDestination(fixture, true);\n", "")
+        .replace("  await rm(metadataPath, { force: true });\n", "")
+        .replace('{ encoding: "utf8", flag: "wx" }', '"utf8"'));
+    }
+    const result = repo.run("sync-fixtures.mjs", args, env);
     await repo.assertNpmComplete();
     assert.equal((await lstat(path.join(repo.payload(), ".crabpot-source.json"))).isSymbolicLink(), true);
     assert.deepEqual(await directoryBytes(repo.outside), before);
