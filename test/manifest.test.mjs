@@ -124,31 +124,80 @@ test("manifest validation rejects invalid fixture contracts before CI materializ
   });
 });
 
-test("manifest validation rejects plugins-prefixed path traversal before materialization", () => {
-  const manifest = {
+function destinationManifest(overrides = {}) {
+  return {
     version: 1,
     submoduleRoot: "plugins",
     fixtures: [
       {
         id: "escape",
-        path: "plugins/../../../tmp/crabpot-escape",
+        path: "plugins/fixture",
         repo: "https://github.com/openclaw/example.git",
         priority: "high",
         seams: ["tool"],
         execution: { blockedFailures: [{ id: "b", seam: "tool", errorIncludes: "x", reason: "y" }] },
         expect: { hooks: ["h"] },
+        ...overrides,
       },
     ],
   };
+}
 
-  assert.throws(
-    () => validateManifest(manifest),
-    (error) => {
-      assert.match(error.message, /escape: path must live under plugins\//);
-      return true;
-    },
-  );
-});
+for (const checkout of [
+  "plugins/../../../tmp/crabpot-escape",
+  "plugins/",
+  "plugins/.",
+  "plugins/fixture/..",
+  "plugins/../outside",
+  "plugins-other/fixture",
+  "/plugins/fixture",
+  "C:/plugins/fixture",
+  "C:plugins/fixture",
+  "//server/share/plugins/fixture",
+  "\\\\server\\share\\plugins\\fixture",
+  "plugins\\fixture",
+  "plugins/fixture\\..\\..\\outside",
+]) {
+  test(`manifest rejects unsafe checkout ${JSON.stringify(checkout)}`, () => {
+    assert.throws(
+      () => validateManifest(destinationManifest({ path: checkout })),
+      /escape: path must live under plugins\//,
+    );
+  });
+}
+
+for (const subdir of [
+  ".",
+  "..",
+  "nested/..",
+  "../outside",
+  "../../outside",
+  "/outside",
+  "C:/outside",
+  "C:outside",
+  "//server/share/outside",
+  "\\\\server\\share\\outside",
+  "nested\\..\\..\\outside",
+]) {
+  test(`manifest rejects unsafe payload subdir ${JSON.stringify(subdir)}`, () => {
+    assert.throws(
+      () => validateManifest(destinationManifest({ subdir })),
+      /escape:.*subdir/,
+    );
+  });
+}
+
+for (const paths of [
+  { path: "plugins/fixture" },
+  { path: "plugins/group/fixture" },
+  { path: "plugins/fixture..name" },
+  { path: "plugins/.../fixture", subdir: "packages/plugin" },
+  { path: "plugins/group/fixture", subdir: "nested/..harmless/payload" },
+]) {
+  test(`manifest accepts contained destinations ${JSON.stringify(paths)}`, () => {
+    assert.doesNotThrow(() => validateManifest(destinationManifest(paths)));
+  });
+}
 
 function invalidManifest() {
   return {
