@@ -377,20 +377,6 @@ for (const acquisition of ["npm", "source-pack"]) {
     const before = await directoryBytes(repo.outside);
     // MSYS tar otherwise copies the link target instead of creating a native Windows symlink.
     const env = process.platform === "win32" ? { MSYS: "winsymlinks:nativestrict" } : {};
-    if (process.platform === "win32") {
-      t.diagnostic(`tar resolution: ${spawnSync("where.exe", ["tar"], { encoding: "utf8" }).stdout}`);
-      t.diagnostic(`tar version: ${spawnSync("tar", ["--version"], { encoding: "utf8" }).stdout}`);
-      // Temporary red control: restore only the pre-fix metadata writer in this sandbox.
-      const script = path.join(repo.root, "scripts/sync-fixtures.mjs");
-      const source = (await readFile(script, "utf8")).replaceAll("\r\n", "\n");
-      assert.equal(source.split("  await assertFixtureDestination(fixture, true);\n").length, 3);
-      assert.equal(source.split("  await rm(metadataPath, { force: true });\n").length, 2);
-      assert.equal(source.split('{ encoding: "utf8", flag: "wx" }').length, 2);
-      await writeFile(script, source
-        .replaceAll("  await assertFixtureDestination(fixture, true);\n", "")
-        .replace("  await rm(metadataPath, { force: true });\n", "")
-        .replace('{ encoding: "utf8", flag: "wx" }', '"utf8"'));
-    }
     const result = repo.run("sync-fixtures.mjs", args, env);
     await repo.assertNpmComplete();
     assert.equal((await lstat(path.join(repo.payload(), ".crabpot-source.json"))).isSymbolicLink(), true);
