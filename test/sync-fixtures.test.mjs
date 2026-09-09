@@ -382,7 +382,7 @@ for (const acquisition of ["npm", "source-pack"]) {
       t.diagnostic(`tar version: ${spawnSync("tar", ["--version"], { encoding: "utf8" }).stdout}`);
       // Temporary red control: restore only the pre-fix metadata writer in this sandbox.
       const script = path.join(repo.root, "scripts/sync-fixtures.mjs");
-      const source = await readFile(script, "utf8");
+      const source = (await readFile(script, "utf8")).replaceAll("\r\n", "\n");
       assert.equal(source.split("  await assertFixtureDestination(fixture, true);\n").length, 3);
       assert.equal(source.split("  await rm(metadataPath, { force: true });\n").length, 2);
       assert.equal(source.split('{ encoding: "utf8", flag: "wx" }').length, 2);
